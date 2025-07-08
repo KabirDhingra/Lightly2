@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lightly - Solar Credits Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f8f0; color: #333; text-align: center; padding: 40px; }
+    h1 { color: #4b8b3b; }
+    input { margin: 10px; padding: 8px; }
+    button { background: #4b8b3b; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+    .output { margin-top: 20px; font-size: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>Lightly - Solar Credits Calculator</h1>
+  <div>
+    <label for="capacity">Capacity Reserved (W):</label><br>
+    <input type="number" id="capacity" placeholder="e.g. 5766"><br>
+
+    <label for="produced">Energy Produced (kWh):</label><br>
+    <input type="number" id="produced" placeholder="e.g. 406.246"><br>
+
+    <label for="rate">Credit Rate per kWh (₹):</label><br>
+    <input type="number" id="rate" placeholder="e.g. 6.42"><br>
+
+    <button onclick="calculateCredits()">Calculate Credits</button>
+
+    <div class="output" id="earned"></div>
+    <div class="output" id="estimated"></div>
+  </div>
+
+  <script>
+    function calculateCredits() {
+      const capacity = parseFloat(document.getElementById('capacity').value);
+      const produced = parseFloat(document.getElementById('produced').value);
+      const rate = parseFloat(document.getElementById('rate').value);
+
+      if (isNaN(capacity) || isNaN(produced) || isNaN(rate)) {
+        alert("Please fill all fields correctly.");
+        return;
+      }
+
+      // Credits Earned
+      const creditsEarned = produced * rate;
+
+      // Credits Estimated (assuming monthly production is 2x current for demo logic)
+      const projectedProduction = produced * 2;
+      const creditsEstimatedMin = projectedProduction * rate * 0.9;
+      const creditsEstimatedMax = projectedProduction * rate * 1.2;
+
+      document.getElementById('earned').innerHTML = `Credits Earned: ₹${creditsEarned.toFixed(2)}`;
+      document.getElementById('estimated').innerHTML = `Credits Estimated: ₹${creditsEstimatedMin.toFixed(0)} - ₹${creditsEstimatedMax.toFixed(0)}`;
+    }
+  </script>
+</body>
+</html>
